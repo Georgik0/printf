@@ -6,7 +6,7 @@
 #    By: skitsch <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/02 12:38:50 by skitsch           #+#    #+#              #
-#    Updated: 2020/11/02 12:38:58 by skitsch          ###   ########.fr        #
+#    Updated: 2020/11/23 13:39:17 by skitsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,12 @@ ft_putstr_fd.c \
 ft_putendl_fd.c \
 ft_putnbr_fd.c \
 ft_calloc.c \
-ft_strdup.c
+ft_strdup.c \
+ft_itoa_u.c \
+ft_get_size_x.c \
+ft_itoa_x.c \
+ft_str_toupper.c \
+ft_itoa_ll.c
 
 SRCS_BONUS = ft_lstnew.c \
 ft_lstadd_front.c \
@@ -70,7 +75,7 @@ CFLAGS = -Wall -Wextra -Werror
 $(NAME):	${OBJS}
 			ar rc ${NAME} ${OBJS}
 			ranlib ${NAME}
-			${RM} *.o
+# ${RM} *.o
 
 bonus:	${OBJS_BONUS}
 		ar rc ${NAME} ${OBJS_BONUS}

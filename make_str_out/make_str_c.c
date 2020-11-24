@@ -12,73 +12,63 @@
 
 #include "../header/printf.h"
 
-void	fill_space_str(char *str, int len)
+void	make_str_c2(char arg, t_modifier *modifier)
 {
-	while (len >= 0)
+	char	*space;
+
+	space = NULL;
+	ft_putchar_fd(arg, 1);
+	if ((modifier->width) > 1)
 	{
-		str[len] = ' ';
-		len--;
+		space = fill_space_d(modifier->width - 1);
+		ft_putstr_fd(space, 1);
+		modifier->length = ft_strlen(space) + 1;
+		free(space);
 	}
+	else
+		modifier->length = 1;
 }
 
-char	*make_str_c1(char *str, char arg)
+void	make_str_c3(char arg, t_modifier *modifier)
 {
-	if (!(str = (char *)malloc(sizeof(char) * 2)))
-		return (NULL);
-	// printf("$test$");
-	str[0] = arg;
-	str[1] = '\0';
-	// printf("str = %s", str);
-	return (str);
-}
+		char	*space;
 
-char	*make_str_c2(char *str, char arg, int width)
-{
-	int i;
-
-	if (!(str = (char *)malloc(sizeof(char) * (width + 1))))
-		return (NULL);
-	// printf("$test$");
-	str[0] = arg;
-	i = 1;
-	while (i < width)
+	space = NULL;
+	if (modifier->width > 1)
 	{
-		str[i] = ' ';
-		i++;
+		space = fill_space_d(modifier->width - 1);
+		ft_putstr_fd(space, 1);
+		modifier->length = ft_strlen(space) + 1;
+		free(space);
 	}
-	str[width] = '\0';
-	// printf("str = %s", str);
-	return (str);
+	else
+		modifier->length = 1;
+	ft_putchar_fd(arg, 1);
 }
 
 char		*make_str_c(t_modifier *modifier, va_list *pa)
 {
-	int			flag;
-	int			width;//ширина
 	char		*str;
 	char		arg;
 
-	flag = modifier->flag;
-	width = modifier->width;
 	str = NULL;
 	arg = va_arg(*pa, int);
-	// printf("arg = %c", arg);
-	// printf("width = %d", width);
-	if (width != 0)
+	if (modifier->width < 0)
 	{
-		if (flag == FLAG_MINUS)
-			str = make_str_c2(str, arg, width);
+		modifier->width = -(modifier->width);
+		modifier->flag = modifier->flag | FLAG_MINUS;
+	}
+	if (modifier->width != 0)
+	{
+		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
+			make_str_c2(arg, modifier);
 		else
-		{
-			if (!(str = (char *)malloc(sizeof(char) * (width + 1))))
-				return (NULL);
-			str[width - 1] = arg;
-			fill_space_str(str, width - 2);
-			str[width] = '\0';
-		}
+			make_str_c3(arg, modifier);
 	}
 	else
-		str = make_str_c1(str, arg);
-	// printf("str = %s", str);
+	{
+		ft_putchar_fd(arg, 1);
+		modifier->length = 1;
+	}
 	return (str);
 }

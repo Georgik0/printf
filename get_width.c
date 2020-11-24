@@ -24,7 +24,6 @@ int		get_width(const char *s, va_list *pa, int *i)
 	{
 		width = va_arg(*pa, int);
 		*i = *i + 1;
-		// printf("wid = %d\n", width);
 		return (width);
 	}
 	else if (s[*i] >= '0' && s[*i] <= '9')
@@ -35,7 +34,6 @@ int		get_width(const char *s, va_list *pa, int *i)
 			*i = *i + 1;
 		}
 		number = ft_substr(s, *i - size, size);
-		// printf("width = %s\n", number);
 		width = ft_atoi(number);
 	}
 	return (width);

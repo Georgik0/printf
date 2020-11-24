@@ -19,13 +19,16 @@ int		get_accuracy(const char *s, int *i, va_list *pa)
 	int		size;
 
 	size = 0;
-	accuracy = 0;
+	accuracy = -1;
 	if (s[*i] == '.')
 	{
+		accuracy = 0;
 		*i = *i + 1;
 		if (s[*i] == '*')
 		{
 			accuracy = va_arg(*pa, int);
+			// if (accuracy < 0)
+			// 	return (-1);
 			*i = *i + 1;
 			return (accuracy);
 		}

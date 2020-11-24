@@ -15,10 +15,18 @@
 # include "my_type.h"
 
 void	fill_space(char *str, int start, int width);
+char	*fill_space_d(int size);
+char	*fill_zero(int len);
+int		get_size_d(long long int arg);
+int		get_size_u(unsigned int arg);
 char	*make_str_out(t_modifier *modifier, va_list *pa);
 char	*make_str_c(t_modifier *modifier, va_list *pa);
 char	*make_str_s(t_modifier *modifier, va_list *pa);
 char	*make_str_p(t_modifier *modifier, va_list *pa);
+char	*make_str_d(t_modifier *modifier, va_list *pa);
+char	*make_str_u(t_modifier *modifier, va_list *pa);
+char	*make_str_x(t_modifier *modifier, va_list *pa, int reg);
+char	*make_str_percent(t_modifier *modifier);
 
 # endif
 

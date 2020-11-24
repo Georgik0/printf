@@ -14,31 +14,33 @@
 
 char	get_type(const char *s, int *i)
 {
+	char	type;
+
 	if (s[*i] == 'c')
-		return ('c');
+		type = 'c';
 	if (s[*i] == 's')
-		return ('s');
+		type = 's';
 	if (s[*i] == 'p')
-		return ('p');
+		type = 'p';
 	if (s[*i] == 'd')
-		return ('d');
+		type = 'd';
 	if (s[*i] == 'i')
-		return ('i');
+		type = 'i';
 	if (s[*i] == 'u')
-		return ('u');
+		type = 'u';
 	if (s[*i] == 'x')
-		return ('x');
+		type = 'x';
 	if (s[*i] == 'X')
-		return ('X');
+		type = 'X';
 	if (s[*i] == '%')
-		return ('%');
+		type = '%';
 	if (s[*i] == 'n')
-		return ('n');
+		type = 'n';
 	if (s[*i] == 'f')
-		return ('f');
+		type = 'f';
 	if (s[*i] == 'g')
-		return ('g');
+		type = 'g';
 	if (s[*i] == 'e')
-		return ('e');
-	return (0);
+		type = 'e';
+	return (type);
 }

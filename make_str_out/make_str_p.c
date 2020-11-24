@@ -89,16 +89,20 @@ char	*make_str_p1(int flag, int width, long int arg)
 
 char	*make_str_p(t_modifier *modifier, va_list *pa)
 {
-	char		*str = NULL;
+	char		*str;
 	long int	arg;
 	int			flag;
 	int			width;
 
+	if (modifier->width < 0)
+	{
+		modifier->width = -(modifier->width);
+		modifier->flag = modifier->flag | FLAG_MINUS;
+	}
 	flag = modifier->flag;
 	width = modifier->width;
 	arg = va_arg(*pa, long int);
-	// printf("arg = %lx\n", arg);
-	// printf("size = %d\n", get_size_str_p(arg));
 	str = make_str_p1(flag, width, arg);
+	modifier->length = ft_strlen(str);
 	return (str);
 }

@@ -20,12 +20,16 @@ char	*make_str_out(t_modifier *modifier, va_list *pa)
 		return (make_str_s(modifier, pa));
 	else if (modifier->type == 'p')
 		return (make_str_p(modifier, pa));
-	else if (modifier->type == 'd')
-	// else if (modifier->type == 'i')
-	// else if (modifier->type == 'u')
-	// else if (modifier->type == 'x')
-	// else if (modifier->type == 'X')
-	// else if (modifier->type == '%')
+	else if (modifier->type == 'd' || modifier->type == 'i')
+		return (make_str_d(modifier, pa));
+	else if (modifier->type == 'u')
+		return (make_str_u(modifier, pa));    // Править itoa_u
+	else if (modifier->type == 'x')
+		return (make_str_x(modifier, pa, 0));
+	else if (modifier->type == 'X')
+		return (make_str_x(modifier, pa, 1));
+	else if (modifier->type == '%')
+		return (make_str_percent(modifier));
 	// else if (modifier->type == 'n')
 	// else if (modifier->type == 'f')
 	// else if (modifier->type == 'g')

@@ -14,7 +14,7 @@
 
 void	make_write(const char *s, int *len, int *i)
 {
-	while ((s[*i] != '%' || (s[*i] == '%' && s[*i + 1] == '%')) && s[*i])
+	while (s[*i] != '%' && s[*i]) // || (s[*i] == '%' && s[*i + 1] == '%'))
 	{
 		*len = *len + 1;
 		write(1, &s[*i], 1);
@@ -44,7 +44,7 @@ int		parser(const char *s, va_list *pa)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] != '%' || (s[i] == '%' && s[i + 1] == '%'))
+		if (s[i] != '%') // || (s[i] == '%' && s[i + 1] == '%')
 		{
 			// printf("|i = %d|", i);
 			make_write(s, &len, &i);
@@ -56,9 +56,10 @@ int		parser(const char *s, va_list *pa)
 		// printf(" |s[i] = %c| ", s[i]);
 		// printf("\ni = %d\n", i);
 		// printf("test = %c", s[i]);
-		if ((s[i] == '%' && s[i + 1] != '%') && s[i])
+		if (s[i] == '%' && s[i]) //  && s[i + 1] != '%'
 		{
 			// printf(" |s[i] = %c| ", s[i]);
+			// printf("test");
 			i++;
 			modifier->flag = get_flags(s, &i);
 			//--------------Проверка флагов-------------------
@@ -96,13 +97,12 @@ int		parser(const char *s, va_list *pa)
 			// ft_putstr_fd(str, 1); // Печатает в консоль аргумент
 			// free(str);
 		}
-		// printf("test = %c", s[i]);
 		if (s[i] == '\0')
 			return len;
 		str = make_str_out(modifier, pa);
-		// printf("\nаргумент = %s\n", str);
-		ft_putstr_fd(str, 1); // Печатает в консоль аргумент
-		// free(str);
+		len = len + modifier->length;
+		ft_putstr_fd(str, 1);
+		free(str);
 		i++;
 	}
 	free(modifier);
