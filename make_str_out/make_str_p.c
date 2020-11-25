@@ -27,63 +27,55 @@ int		get_size_str_p(long int arg)
 	return (size - 1);
 }
 
-void	make_str_p2(char *str, long int arg, int start, int size)
+void	make_str_p2(char *str, long int arg, int size)
 {
 	while (size >= 2)
 	{
 		if (arg % 16 == 10)
-			str[start + size] = 'a';
+			str[size] = 'a';
 		else if (arg % 16 == 11)
-			str[start + size] = 'b';
+			str[size] = 'b';
 		else if (arg % 16 == 12)
-			str[start + size] = 'c';
+			str[size] = 'c';
 		else if (arg % 16 == 13)
-			str[start + size] = 'd';
+			str[size] = 'd';
 		else if (arg % 16 == 14)
-			str[start + size] = 'e';
+			str[size] = 'e';
 		else if (arg % 16 == 15)
-			str[start + size] = 'f';
+			str[size] = 'f';
 		else
-			str[start + size] = arg % 16 + '0';
+			str[size] = arg % 16 + '0';
 		arg = arg / 16;
 		size--;
 	}
-	str[start] = '0';
-	str[start + 1] = 'x';
+	str[0] = '0';
+	str[1] = 'x';
 }
 
-char	*make_str_p1(int flag, int width, long int arg)
+char	*make_str_p1(t_modifier *modifier, long int arg)
 {
-	char	*str = NULL;
+	char	*str;
+	char	*space;
 	int		size;
 
-	size = get_size_str_p(arg) + 2;
-	if (size >= width)
-	{
-		if (!(str = (char *)malloc((size + 1) * sizeof(char))))
-			return (NULL);
-		make_str_p2(str, arg, 0, size - 1);
-		str[size] = '\0';
-		// printf("str = %s\n", str);
-	}
+	space = NULL;
+	if (modifier->accuracy > -1 && arg == (long int)NULL)
+		size = 2;
 	else
+		size = get_size_str_p(arg) + 2;
+	if (!(str = (char *)malloc((size + 1) * sizeof(char))))
+		return (NULL);
+	make_str_p2(str, arg, size - 1);
+	str[size] = '\0';
+	if (size < modifier->width)
 	{
-		if (flag == FLAG_MINUS)
-		{
-			if (!(str = (char *)malloc((width + 1) * sizeof(char))))
-				return (NULL);
-			make_str_p2(str, arg, 0, size - 1);
-			fill_space(str, size, width);
-		}
+		space = fill_space_d(modifier->width - size);
+		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
+			str = ft_strjoin(str, space);
 		else
-		{
-			if (!(str = (char *)malloc((width + 1) * sizeof(char))))
-				return (NULL);
-			fill_space(str, 0, width - size);
-			make_str_p2(str, arg, width - size, size - 1);
-		}
-		str[width] = '\0';
+			str = ft_strjoin(space, str);
 	}
+	free(space);
 	return (str);
 }
 
@@ -91,18 +83,14 @@ char	*make_str_p(t_modifier *modifier, va_list *pa)
 {
 	char		*str;
 	long int	arg;
-	int			flag;
-	int			width;
 
 	if (modifier->width < 0)
 	{
 		modifier->width = -(modifier->width);
 		modifier->flag = modifier->flag | FLAG_MINUS;
 	}
-	flag = modifier->flag;
-	width = modifier->width;
 	arg = va_arg(*pa, long int);
-	str = make_str_p1(flag, width, arg);
+	str = make_str_p1(modifier, arg);
 	modifier->length = ft_strlen(str);
 	return (str);
 }

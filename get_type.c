@@ -34,13 +34,5 @@ char	get_type(const char *s, int *i)
 		type = 'X';
 	if (s[*i] == '%')
 		type = '%';
-	if (s[*i] == 'n')
-		type = 'n';
-	if (s[*i] == 'f')
-		type = 'f';
-	if (s[*i] == 'g')
-		type = 'g';
-	if (s[*i] == 'e')
-		type = 'e';
 	return (type);
 }

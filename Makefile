@@ -62,6 +62,7 @@ clean:
 
 fclean:	clean
 		${RM} ${NAME}
+		make fclean -C $(LIBFT_DIR)
 
 re:	fclean all
 

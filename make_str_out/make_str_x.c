@@ -19,10 +19,10 @@ char	*make_str_flag_x(t_modifier *modifier, char *str)
 	int		size;
 
 	size = ft_strlen(str);
-	// printf("strlen = %d\n", size);
 	if (modifier->width > size)
 	{
-		if (modifier->accuracy == -1 && ((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
+		if (modifier->accuracy == -1 &&
+		((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
 		{
 			zero = fill_zero(modifier->width - size);
 			str = ft_strjoin(zero, str);
@@ -46,14 +46,12 @@ char	*make_str_x1(t_modifier *modifier, long int arg, int reg)
 	int		size;
 
 	size = ft_get_size_x(arg);
-	// printf("size = %d\n", size);
 	if (modifier->accuracy == 0 && arg == 0)
 		str = ft_calloc(1, 1);
 	else
 		str = ft_itoa_x(arg);
 	if (reg == 1)
 		ft_str_toupper(str);
-	// printf("str = $%s$\n", str);
 	if (modifier->accuracy > size)
 	{
 		zero = fill_zero(modifier->accuracy - size);

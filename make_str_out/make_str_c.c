@@ -12,7 +12,7 @@
 
 #include "../header/printf.h"
 
-void	make_str_c2(char arg, t_modifier *modifier)
+static void		make_str_c2(char arg, t_modifier *modifier)
 {
 	char	*space;
 
@@ -29,9 +29,9 @@ void	make_str_c2(char arg, t_modifier *modifier)
 		modifier->length = 1;
 }
 
-void	make_str_c3(char arg, t_modifier *modifier)
+static void		make_str_c3(char arg, t_modifier *modifier)
 {
-		char	*space;
+	char	*space;
 
 	space = NULL;
 	if (modifier->width > 1)
@@ -46,7 +46,7 @@ void	make_str_c3(char arg, t_modifier *modifier)
 	ft_putchar_fd(arg, 1);
 }
 
-char		*make_str_c(t_modifier *modifier, va_list *pa)
+char			*make_str_c(t_modifier *modifier, va_list *pa)
 {
 	char		*str;
 	char		arg;

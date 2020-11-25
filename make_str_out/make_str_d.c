@@ -12,7 +12,7 @@
 
 #include "../header/printf.h"
 
-char	*make_sign_str(t_modifier *modifier, int arg)
+static char		*make_sign_str(t_modifier *modifier, int arg)
 {
 	char	*sign;
 
@@ -31,43 +31,49 @@ char	*make_sign_str(t_modifier *modifier, int arg)
 	return (sign);
 }
 
-char	*make_str_flag_d(t_modifier *modifier, char *str, char *sign)
+static char		*make_str_flag_d1(t_modifier *modifier, int size,
+				char *str, char *sign)
 {
 	char	*zero;
 	char	*space;
-	int		size;
 
 	zero = NULL;
 	space = NULL;
-	size = ft_strlen(str);
-	if (sign != NULL)
-		size++;
-	if (modifier->width > size)
+	if (modifier->accuracy == -1 && ((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
 	{
-		if (modifier->accuracy == -1 && ((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
-		{
-			zero = fill_zero(modifier->width - size);
-			str = ft_strjoin(zero, str);
-			str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
-		}
-		else
-		{
-			str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
-			space = fill_space_d(modifier->width - size);
-			if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-				str = ft_strjoin(str, space);
-			else
-				str = ft_strjoin(space, str);
-		}
+		zero = fill_zero(modifier->width - size);
+		str = ft_strjoin(zero, str);
+		str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
 	}
 	else
+	{
 		str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
+		space = fill_space_d(modifier->width - size);
+		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
+			str = ft_strjoin(str, space);
+		else
+			str = ft_strjoin(space, str);
+	}
 	free(zero);
 	free(space);
 	return (str);
 }
 
-char	*make_str_d1(t_modifier *modifier, long int arg)
+static char		*make_str_flag_d(t_modifier *modifier, char *str, char *sign)
+{
+	int		size;
+
+	size = ft_strlen(str);
+	if (sign != NULL)
+		size++;
+	if (modifier->width > size)
+		str = make_str_flag_d1(modifier, size, str, sign);
+	else
+		str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
+	return (str);
+}
+
+static char		*make_str_d1(t_modifier *modifier, long int arg)
 {
 	char	*str;
 	char	*zero;
@@ -89,14 +95,13 @@ char	*make_str_d1(t_modifier *modifier, long int arg)
 		zero = fill_zero(modifier->accuracy - size);
 		str = ft_strjoin(zero, str);
 	}
-	// printf("test str = %s\n", str);
 	str = make_str_flag_d(modifier, str, sign);
 	free(zero);
 	free(sign);
 	return (str);
 }
 
-char	*make_str_d(t_modifier *modifier, va_list *pa)
+char			*make_str_d(t_modifier *modifier, va_list *pa)
 {
 	char		*str;
 	long int	arg;

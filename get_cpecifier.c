@@ -12,35 +12,38 @@
 
 #include "./header/printf.h"
 
-int		get_cpecifier(const char *s, int *i)
+static int	get_cpecifier1(const char *s, int *i, int cpecifier)
+{
+	if (s[*i] == 'l' && s[*i] != 'l')
+	{
+		cpecifier = cpecifier | CPECIFIER_L;
+	}
+	else if (s[*i] == 'l' && s[*i] == 'l')
+	{
+		cpecifier = cpecifier | CPECIFIER_LL;
+		*i = *i + 1;
+	}
+	else if (s[*i] == 'h' && s[*i] != 'h')
+	{
+		cpecifier = cpecifier | CPECIFIER_H;
+	}
+	else if (s[*i] == 'h' && s[*i] == 'h')
+	{
+		cpecifier = cpecifier | CPECIFIER_HH;
+		*i = *i + 1;
+	}
+	return (cpecifier);
+}
+
+int			get_cpecifier(const char *s, int *i)
 {
 	int	cpecifier;
 
 	cpecifier = CPECIFIER_OUT;
 	while (s[*i] == 'l' || s[*i] == 'h')
 	{
-		//printf("s = %c\n", s[*i]);
-		if (s[*i] == 'l' && s[*i] != 'l')
-		{
-			cpecifier = cpecifier | CPECIFIER_l;
-		}
-		else if (s[*i] == 'l' && s[*i] == 'l')
-		{
-			cpecifier = cpecifier | CPECIFIER_ll;
-			*i = *i + 1;
-		}
-		else if (s[*i] == 'h' && s[*i] != 'h')
-		{
-			cpecifier = cpecifier | CPECIFIER_h;
-		}
-		else if (s[*i] == 'h' && s[*i] == 'h')
-		{
-			cpecifier = cpecifier | CPECIFIER_hh;
-			*i = *i + 1;
-			//printf("s = %c\n", s[*i]);
-		}
+		cpecifier = get_cpecifier1(s, i, cpecifier);
 		*i = *i + 1;
-		//printf("s = %c\n", s[*i]);
 	}
 	return (cpecifier);
 }

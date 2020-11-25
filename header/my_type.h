@@ -16,9 +16,9 @@
 typedef struct	s_modifier
 {
 	int			flag;
-	int			width;//ширина
-	int			accuracy;//точность
-	int			specifier;//спецификатор
+	int			width;
+	int			accuracy;
+	int			specifier;
 	char		type;
 	int			length;
 

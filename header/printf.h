@@ -28,5 +28,4 @@ int				get_accuracy(const char *s, int *i, va_list *pa);
 int				get_cpecifier(const char *s, int *i);
 char			get_type(const char *s, int *i);
 
-
 #endif

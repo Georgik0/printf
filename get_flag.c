@@ -12,12 +12,13 @@
 
 #include "./header/printf.h"
 
-int get_flags(const char *s, int *i)
+int	get_flags(const char *s, int *i)
 {
 	int flag;
 
 	flag = FLAG_OUT;
-	while (s[*i] == ' ' || s[*i] == '+' || s[*i] == '-' || s[*i] == '0' || s[*i] == '#')
+	while (s[*i] == ' ' || s[*i] == '+' || s[*i] == '-' || s[*i] == '0' ||
+	s[*i] == '#')
 	{
 		if (s[*i] == ' ')
 			flag = flag | FLAG_SPACE;

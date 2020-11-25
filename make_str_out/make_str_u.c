@@ -12,37 +12,43 @@
 
 #include "../header/printf.h"
 
-char	*make_str_flag_u(t_modifier *modifier, char *str)
+static char		*make_str_flag_u1(t_modifier *modifier, char *str, int size)
 {
 	char	*zero;
 	char	*space;
-	int		size;
 
-	size = ft_strlen(str);
 	zero = NULL;
 	space = NULL;
-	if (modifier->width > size)
+	if (modifier->accuracy == -1 &&
+	((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
 	{
-		if (modifier->accuracy == -1 && ((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
-		{
-			zero = fill_zero(modifier->width - size);
-			str = ft_strjoin(zero, str);
-		}
-		else
-		{
-			space = fill_space_d(modifier->width - size);
-			if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-				str = ft_strjoin(str, space);
-			else
-				str = ft_strjoin(space, str);
-		}
+		zero = fill_zero(modifier->width - size);
+		str = ft_strjoin(zero, str);
+		free(zero);
 	}
-	free(zero);
-	free(space);
+	else
+	{
+		space = fill_space_d(modifier->width - size);
+		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
+			str = ft_strjoin(str, space);
+		else
+			str = ft_strjoin(space, str);
+		free(space);
+	}
 	return (str);
 }
 
-char	*make_str_u1(t_modifier *modifier, unsigned int arg)
+static char		*make_str_flag_u(t_modifier *modifier, char *str)
+{
+	int		size;
+
+	size = ft_strlen(str);
+	if (modifier->width > size)
+		str = make_str_flag_u1(modifier, str, size);
+	return (str);
+}
+
+static char		*make_str_u1(t_modifier *modifier, unsigned int arg)
 {
 	char	*str;
 	char	*zero;
@@ -68,7 +74,7 @@ char	*make_str_u1(t_modifier *modifier, unsigned int arg)
 	return (str);
 }
 
-char	*make_str_u(t_modifier *modifier, va_list *pa)
+char			*make_str_u(t_modifier *modifier, va_list *pa)
 {
 	char			*str;
 	unsigned int	arg;
