@@ -35,6 +35,7 @@ int		get_width(const char *s, va_list *pa, int *i)
 		}
 		number = ft_substr(s, *i - size, size);
 		width = ft_atoi(number);
+		free(number);
 	}
 	return (width);
 }

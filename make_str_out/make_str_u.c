@@ -16,36 +16,46 @@ static char		*make_str_flag_u1(t_modifier *modifier, char *str, int size)
 {
 	char	*zero;
 	char	*space;
+	char	*out;
 
 	zero = NULL;
 	space = NULL;
+	out = NULL;
 	if (modifier->accuracy == -1 &&
 	((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
 	{
 		zero = fill_zero(modifier->width - size);
-		str = ft_strjoin(zero, str);
+		out = ft_strjoin(zero, str);
 		free(zero);
 	}
 	else
 	{
 		space = fill_space_d(modifier->width - size);
 		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			str = ft_strjoin(str, space);
+			out = ft_strjoin(str, space);
 		else
-			str = ft_strjoin(space, str);
+			out = ft_strjoin(space, str);
 		free(space);
 	}
-	return (str);
+	return (out);
 }
 
 static char		*make_str_flag_u(t_modifier *modifier, char *str)
 {
 	int		size;
+	char	*out;
 
+	out = NULL;
 	size = ft_strlen(str);
 	if (modifier->width > size)
-		str = make_str_flag_u1(modifier, str, size);
-	return (str);
+	{
+		out = make_str_flag_u1(modifier, str, size);
+	}
+	else
+	{
+		out = ft_strdup(str);
+	}
+	return (out);
 }
 
 static char		*make_str_u1(t_modifier *modifier, unsigned int arg)
@@ -54,9 +64,11 @@ static char		*make_str_u1(t_modifier *modifier, unsigned int arg)
 	char	*zero;
 	int		size;
 	char	*sign;
+	char	*out;
 
 	zero = NULL;
 	sign = NULL;
+	out = NULL;
 	size = get_size_u(arg);
 	if (modifier->accuracy == 0 && arg == 0)
 		str = ft_calloc(1, 1);
@@ -65,13 +77,26 @@ static char		*make_str_u1(t_modifier *modifier, unsigned int arg)
 	if (modifier->accuracy > size)
 	{
 		zero = fill_zero(modifier->accuracy - size);
-		str = ft_strjoin(zero, str);
+		out = ft_strjoin(zero, str);
+		free(str);
 	}
-	str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
-	str = make_str_flag_u(modifier, str);
+	else
+	{
+		out = ft_strdup(str);
+		free(str);
+	}
+	if (!(str = ft_strjoin(sign, out)))
+	{
+		str = ft_strdup(out);
+		free(out);
+	}
+	else
+		free(out);
+	out = make_str_flag_u(modifier, str);
 	free(zero);
 	free(sign);
-	return (str);
+	free(str);
+	return (out);
 }
 
 char			*make_str_u(t_modifier *modifier, va_list *pa)

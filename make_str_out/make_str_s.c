@@ -12,14 +12,10 @@
 
 #include "../header/printf.h"
 
-char	*make_str_s1(t_modifier *modifier, const char *arg)
+char	*make_str_s2(t_modifier *modifier, const char *arg)
 {
-	char		*str;
-	const char	*space;
-	int			len_str;
+	char	*str;
 
-	if (arg == NULL)
-		arg = "(null)";
 	if (modifier->accuracy < (int)ft_strlen(arg) && modifier->accuracy >= 0)
 	{
 		if (!(str = (char *)malloc((modifier->accuracy + 1) * sizeof(char))))
@@ -28,14 +24,31 @@ char	*make_str_s1(t_modifier *modifier, const char *arg)
 	}
 	else
 		str = ft_strdup(arg);
+	return (str);
+}
+
+char	*make_str_s1(t_modifier *modifier, const char *arg)
+{
+	char		*str;
+	char		*str1;
+	const char	*space;
+	int			len_str;
+
+	str1 = NULL;
+	if (arg == NULL)
+		arg = "(null)";
+	str = make_str_s2(modifier, arg);
 	len_str = ft_strlen(str);
 	if (modifier->width > len_str)
 	{
 		space = fill_space_d(modifier->width - len_str);
 		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			str = ft_strjoin(str, space);
+			str1 = ft_strjoin(str, space);
 		else
-			str = ft_strjoin(space, str);
+			str1 = ft_strjoin(space, str);
+		free((char *)str);
+		free((char *)space);
+		return (str1);
 	}
 	return (str);
 }

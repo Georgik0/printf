@@ -12,39 +12,75 @@
 
 #include "../header/printf.h"
 
-char	*make_str_flag_x(t_modifier *modifier, char *str)
+char	*make_str_flag_x1(t_modifier *modifier, char *str, int size)
 {
+	char	*str1;
 	char	*zero;
 	char	*space;
+
+	str1 = NULL;
+	if (modifier->accuracy == -1 &&
+	((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
+	{
+		zero = fill_zero(modifier->width - size);
+		str1 = ft_strjoin(zero, str);
+		free(zero);
+		free(str);
+	}
+	else
+	{
+		space = fill_space_d(modifier->width - size);
+		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
+			str1 = ft_strjoin(str, space);
+		else
+			str1 = ft_strjoin(space, str);
+		free(space);
+		free(str);
+	}
+	return (str1);
+}
+
+char	*make_str_flag_x(t_modifier *modifier, char *str)
+{
+	char	*str1;
 	int		size;
 
 	size = ft_strlen(str);
+	str1 = NULL;
 	if (modifier->width > size)
 	{
-		if (modifier->accuracy == -1 &&
-		((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
-		{
-			zero = fill_zero(modifier->width - size);
-			str = ft_strjoin(zero, str);
-		}
-		else
-		{
-			space = fill_space_d(modifier->width - size);
-			if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-				str = ft_strjoin(str, space);
-			else
-				str = ft_strjoin(space, str);
-		}
+		str1 = make_str_flag_x1(modifier, str, size);
+		return (str1);
 	}
 	return (str);
 }
 
-char	*make_str_x1(t_modifier *modifier, long int arg, int reg)
+char	*make_str_x2(t_modifier *modifier, char *str, int size)
+{
+	char	*zero;
+	char	*out;
+
+	zero = NULL;
+	if (modifier->accuracy > size)
+	{
+		zero = fill_zero(modifier->accuracy - size);
+		out = ft_strjoin(zero, str);
+		free(zero);
+		free(str);
+		return (out);
+	}
+	return (str);
+}
+
+char	*make_str_x1(t_modifier *modifier, unsigned long int arg, int reg)
 {
 	char	*str;
-	char	*zero;
+	char	*str1;
+	char	*str2;
 	int		size;
 
+	str1 = NULL;
+	str2 = NULL;
 	size = ft_get_size_x(arg);
 	if (modifier->accuracy == 0 && arg == 0)
 		str = ft_calloc(1, 1);
@@ -52,21 +88,17 @@ char	*make_str_x1(t_modifier *modifier, long int arg, int reg)
 		str = ft_itoa_x(arg);
 	if (reg == 1)
 		ft_str_toupper(str);
-	if (modifier->accuracy > size)
-	{
-		zero = fill_zero(modifier->accuracy - size);
-		str = ft_strjoin(zero, str);
-	}
-	str = make_str_flag_x(modifier, str);
-	return (str);
+	str1 = make_str_x2(modifier, str, size);
+	str2 = make_str_flag_x(modifier, str1);
+	return (str2);
 }
 
 char	*make_str_x(t_modifier *modifier, va_list *pa, int reg)
 {
-	char		*str;
-	long int	arg;
+	char				*str;
+	unsigned long int	arg;
 
-	arg = va_arg(*pa, long int);
+	arg = va_arg(*pa, unsigned long int);
 	if (modifier->width < 0)
 	{
 		modifier->width = -(modifier->width);

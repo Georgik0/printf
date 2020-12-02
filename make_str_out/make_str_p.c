@@ -12,7 +12,7 @@
 
 #include "../header/printf.h"
 
-int		get_size_str_p(long int arg)
+int		get_size_str_p(unsigned long long int arg)
 {
 	int size;
 
@@ -27,7 +27,7 @@ int		get_size_str_p(long int arg)
 	return (size - 1);
 }
 
-void	make_str_p2(char *str, long int arg, int size)
+void	make_str_p2(char *str, unsigned long long int arg, int size)
 {
 	while (size >= 2)
 	{
@@ -52,14 +52,16 @@ void	make_str_p2(char *str, long int arg, int size)
 	str[1] = 'x';
 }
 
-char	*make_str_p1(t_modifier *modifier, long int arg)
+char	*make_str_p1(t_modifier *modifier, unsigned long long int arg)
 {
 	char	*str;
 	char	*space;
 	int		size;
+	char	*out;
 
 	space = NULL;
-	if (modifier->accuracy > -1 && arg == (long int)NULL)
+	out = NULL;
+	if (modifier->accuracy > -1 && arg == (unsigned long long int)NULL)
 		size = 2;
 	else
 		size = get_size_str_p(arg) + 2;
@@ -71,9 +73,12 @@ char	*make_str_p1(t_modifier *modifier, long int arg)
 	{
 		space = fill_space_d(modifier->width - size);
 		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			str = ft_strjoin(str, space);
+			out = ft_strjoin(str, space);
 		else
-			str = ft_strjoin(space, str);
+			out = ft_strjoin(space, str);
+		free(str);
+		free(space);
+		return (out);
 	}
 	free(space);
 	return (str);
@@ -81,15 +86,15 @@ char	*make_str_p1(t_modifier *modifier, long int arg)
 
 char	*make_str_p(t_modifier *modifier, va_list *pa)
 {
-	char		*str;
-	long int	arg;
+	char					*str;
+	unsigned long long int	arg;
 
 	if (modifier->width < 0)
 	{
 		modifier->width = -(modifier->width);
 		modifier->flag = modifier->flag | FLAG_MINUS;
 	}
-	arg = va_arg(*pa, long int);
+	arg = va_arg(*pa, unsigned long long int);
 	str = make_str_p1(modifier, arg);
 	modifier->length = ft_strlen(str);
 	return (str);

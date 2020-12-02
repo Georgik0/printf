@@ -22,6 +22,7 @@ make_str_out/make_str_d.c make_str_out/fill_zero.c \
 make_str_out/get_size_d.c make_str_out/fill_space_d.c \
 make_str_out/get_size_u.c make_str_out/make_str_u.c \
 make_str_out/make_str_x.c make_str_out/make_str_percent.c \
+make_str_out/make_sign_str_d.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -43,19 +44,6 @@ $(NAME):	${OBJS}
 			ar -rc $(NAME) ${OBJS}
 
 all:	${NAME}
-
-test:	${OBJS}
-		make -C $(LIBFT_DIR)
-		${GCC} -o ${NAME} *.o ./make_str_out/*.o -L ./libft -lft
-		./${NAME}
-# make -C libft/
-# gcc -c *.c ./libft/ft_substr.c && ./a.out
-# rm a.out
-#${OBJS} test
-#./test
-#fclean
-
-
 
 clean:
 		${RM} ${OBJS}

@@ -12,76 +12,84 @@
 
 #include "../header/printf.h"
 
-static char		*make_sign_str(t_modifier *modifier, int arg)
-{
-	char	*sign;
-
-	if (!(sign = (char *)malloc(2 * sizeof(char))))
-		return (NULL);
-	if (arg < 0)
-		sign[0] = '-';
-	else if (((modifier->flag & FLAG_PLUS) == FLAG_PLUS) && arg > 0)
-		sign[0] = '+';
-	else
-	{
-		free(sign);
-		return (NULL);
-	}
-	sign[1] = '\0';
-	return (sign);
-}
-
 static char		*make_str_flag_d1(t_modifier *modifier, int size,
 				char *str, char *sign)
 {
 	char	*zero;
 	char	*space;
+	char	*out;
 
 	zero = NULL;
 	space = NULL;
+	out = NULL;
 	if (modifier->accuracy == -1 && ((modifier->flag & FLAG_ZERO) == FLAG_ZERO))
 	{
 		zero = fill_zero(modifier->width - size);
-		str = ft_strjoin(zero, str);
-		str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
+		out = ft_strjoin(zero, str);
+		free(str);
+		free(zero);
+		if (!(str = ft_strjoin(sign, out)))
+		{
+			str = ft_strdup(out);
+			free(out);
+		}
+		else
+			free(out);
 	}
 	else
 	{
-		str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
+		if (!(out = ft_strjoin(sign, str)))
+		{
+			out = ft_strdup(str);
+			free(str);
+		}
+		else
+			free(str);
 		space = fill_space_d(modifier->width - size);
 		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			str = ft_strjoin(str, space);
+			str = ft_strjoin(out, space);
 		else
-			str = ft_strjoin(space, str);
+			str = ft_strjoin(space, out);
+		free(space);
+		free(out);
 	}
-	free(zero);
-	free(space);
 	return (str);
 }
 
 static char		*make_str_flag_d(t_modifier *modifier, char *str, char *sign)
 {
 	int		size;
+	char	*out;
 
 	size = ft_strlen(str);
 	if (sign != NULL)
 		size++;
 	if (modifier->width > size)
-		str = make_str_flag_d1(modifier, size, str, sign);
+		out = make_str_flag_d1(modifier, size, str, sign);
 	else
-		str = ft_strjoin(sign, str) == NULL ? str : ft_strjoin(sign, str);
-	return (str);
+	{
+		if (!(out = ft_strjoin(sign, str)))
+		{
+			out = ft_strdup(str);
+			free(str);
+		}
+		else
+			free(str);
+	}
+	return (out);
 }
 
 static char		*make_str_d1(t_modifier *modifier, long int arg)
 {
 	char	*str;
+	char	*out;
 	char	*zero;
 	int		size;
 	char	*sign;
 
 	zero = NULL;
 	sign = NULL;
+	out = NULL;
 	sign = make_sign_str(modifier, arg);
 	if (arg < 0)
 		arg = -arg;
@@ -93,9 +101,15 @@ static char		*make_str_d1(t_modifier *modifier, long int arg)
 	if (modifier->accuracy > size)
 	{
 		zero = fill_zero(modifier->accuracy - size);
-		str = ft_strjoin(zero, str);
+		out = ft_strjoin(zero, str);
+		free(str);
 	}
-	str = make_str_flag_d(modifier, str, sign);
+	else
+	{
+		out = ft_strdup(str);
+		free(str);
+	}
+	str = make_str_flag_d(modifier, out, sign);
 	free(zero);
 	free(sign);
 	return (str);

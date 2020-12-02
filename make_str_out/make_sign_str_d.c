@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   make_sign_str_d.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skitsch <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/13 17:58:43 by skitsch           #+#    #+#             */
-/*   Updated: 2020/11/13 17:59:53 by skitsch          ###   ########.fr       */
+/*   Created: 2020/12/02 16:56:17 by skitsch           #+#    #+#             */
+/*   Updated: 2020/12/02 16:56:19 by skitsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./header/printf.h"
+#include "../header/printf.h"
 
-int	ft_printf(const char *format, ...)
+char		*make_sign_str(t_modifier *modifier, int arg)
 {
-	va_list		ap;
-	const char	*str;
-	int			out;
+	char	*sign;
 
-	va_start(ap, format);
-	if ((out = parser(format, &ap)) == -1)
-		return (-1);
-	str = va_arg(ap, char*);
-	va_end(ap);
-	return (out);
+	if (!(sign = (char *)malloc(2 * sizeof(char))))
+		return (NULL);
+	if (arg < 0)
+		sign[0] = '-';
+	else if (((modifier->flag & FLAG_PLUS) == FLAG_PLUS) && arg > 0)
+		sign[0] = '+';
+	else
+	{
+		free(sign);
+		return (NULL);
+	}
+	sign[1] = '\0';
+	return (sign);
 }

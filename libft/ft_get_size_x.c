@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int		ft_get_size_x(long int n)
+int		ft_get_size_x(unsigned long int n)
 {
 	int size;
 
