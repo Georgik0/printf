@@ -58,6 +58,23 @@ static char		*make_str_flag_u(t_modifier *modifier, char *str)
 	return (out);
 }
 
+static char		*make_str_u2(t_modifier *modifier, int size,
+				char *zero, char *str)
+{
+	char	*out;
+
+	out = NULL;
+	if (modifier->accuracy > size)
+	{
+		zero = fill_zero(modifier->accuracy - size);
+		out = ft_strjoin(zero, str);
+	}
+	else
+		out = ft_strdup(str);
+	free(zero);
+	return (out);
+}
+
 static char		*make_str_u1(t_modifier *modifier, unsigned int arg)
 {
 	char	*str;
@@ -74,26 +91,12 @@ static char		*make_str_u1(t_modifier *modifier, unsigned int arg)
 		str = ft_calloc(1, 1);
 	else
 		str = ft_itoa_u(arg);
-	if (modifier->accuracy > size)
-	{
-		zero = fill_zero(modifier->accuracy - size);
-		out = ft_strjoin(zero, str);
-		free(str);
-	}
-	else
-	{
-		out = ft_strdup(str);
-		free(str);
-	}
+	out = make_str_u2(modifier, size, zero, str);
+	free(str);
 	if (!(str = ft_strjoin(sign, out)))
-	{
 		str = ft_strdup(out);
-		free(out);
-	}
-	else
-		free(out);
+	free(out);
 	out = make_str_flag_u(modifier, str);
-	free(zero);
 	free(sign);
 	free(str);
 	return (out);

@@ -52,6 +52,20 @@ void	make_str_p2(char *str, unsigned long long int arg, int size)
 	str[1] = 'x';
 }
 
+char	*check_flag(t_modifier *modifier, char *str, char *space)
+{
+	char	*out;
+
+	out = NULL;
+	if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
+		out = ft_strjoin(str, space);
+	else
+		out = ft_strjoin(space, str);
+	free(str);
+	free(space);
+	return (out);
+}
+
 char	*make_str_p1(t_modifier *modifier, unsigned long long int arg)
 {
 	char	*str;
@@ -72,12 +86,7 @@ char	*make_str_p1(t_modifier *modifier, unsigned long long int arg)
 	if (size < modifier->width)
 	{
 		space = fill_space_d(modifier->width - size);
-		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			out = ft_strjoin(str, space);
-		else
-			out = ft_strjoin(space, str);
-		free(str);
-		free(space);
+		out = check_flag(modifier, str, space);
 		return (out);
 	}
 	free(space);

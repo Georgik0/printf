@@ -27,5 +27,6 @@ int				get_width(const char *s, va_list *pa, int *i);
 int				get_accuracy(const char *s, int *i, va_list *pa);
 int				get_cpecifier(const char *s, int *i);
 char			get_type(const char *s, int *i);
+int				ft_printf(const char *format, ...);
 
 #endif

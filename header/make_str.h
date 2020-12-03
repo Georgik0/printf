@@ -28,5 +28,7 @@ char	*make_str_u(t_modifier *modifier, va_list *pa);
 char	*make_str_x(t_modifier *modifier, va_list *pa, int reg);
 char	*make_str_percent(t_modifier *modifier);
 char	*make_sign_str(t_modifier *modifier, int arg);
+char	*help_str_d(t_modifier *modifier, int size, char *out);
+char	*help_str_d1(t_modifier *modifier, int size, char *str);
 
 #endif

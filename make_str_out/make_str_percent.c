@@ -16,22 +16,26 @@ char	*make_str_percent1(t_modifier *modifier, char *str)
 {
 	char	*zero;
 	char	*space;
+	char	*out;
 
+	out = NULL;
 	if (modifier->width > 1)
 	{
 		zero = fill_zero(modifier->width - 1);
 		space = fill_space_d(modifier->width - 1);
 		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			str = ft_strjoin(str, space);
+			out = ft_strjoin(str, space);
 		else
 		{
 			if ((modifier->flag & FLAG_ZERO) == FLAG_ZERO)
-				str = ft_strjoin(zero, str);
+				out = ft_strjoin(zero, str);
 			else
-				str = ft_strjoin(space, str);
+				out = ft_strjoin(space, str);
 		}
+		free(str);
 		free(zero);
 		free(space);
+		return (out);
 	}
 	return (str);
 }
@@ -39,7 +43,9 @@ char	*make_str_percent1(t_modifier *modifier, char *str)
 char	*make_str_percent(t_modifier *modifier)
 {
 	char	*str;
+	char	*out;
 
+	out = NULL;
 	if (!(str = (char *)ft_calloc(1, 2)))
 		return (NULL);
 	str[0] = '%';
@@ -48,7 +54,7 @@ char	*make_str_percent(t_modifier *modifier)
 		modifier->width = -(modifier->width);
 		modifier->flag = modifier->flag | FLAG_MINUS;
 	}
-	str = make_str_percent1(modifier, str);
-	modifier->length = ft_strlen(str);
-	return (str);
+	out = make_str_percent1(modifier, str);
+	modifier->length = ft_strlen(out);
+	return (out);
 }

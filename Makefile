@@ -22,7 +22,8 @@ make_str_out/make_str_d.c make_str_out/fill_zero.c \
 make_str_out/get_size_d.c make_str_out/fill_space_d.c \
 make_str_out/get_size_u.c make_str_out/make_str_u.c \
 make_str_out/make_str_x.c make_str_out/make_str_percent.c \
-make_str_out/make_sign_str_d.c
+make_str_out/make_sign_str_d.c make_str_out/help_str_d.c \
+
 
 OBJS = ${SRCS:.c=.o}
 

@@ -29,29 +29,15 @@ static char		*make_str_flag_d1(t_modifier *modifier, int size,
 		free(str);
 		free(zero);
 		if (!(str = ft_strjoin(sign, out)))
-		{
 			str = ft_strdup(out);
-			free(out);
-		}
-		else
-			free(out);
+		free(out);
 	}
 	else
 	{
 		if (!(out = ft_strjoin(sign, str)))
-		{
 			out = ft_strdup(str);
-			free(str);
-		}
-		else
-			free(str);
-		space = fill_space_d(modifier->width - size);
-		if ((modifier->flag & FLAG_MINUS) == FLAG_MINUS)
-			str = ft_strjoin(out, space);
-		else
-			str = ft_strjoin(space, out);
-		free(space);
-		free(out);
+		free(str);
+		str = help_str_d(modifier, size, out);
 	}
 	return (str);
 }
@@ -98,17 +84,7 @@ static char		*make_str_d1(t_modifier *modifier, long int arg)
 		str = ft_calloc(1, 1);
 	else
 		str = ft_itoa_ll(arg);
-	if (modifier->accuracy > size)
-	{
-		zero = fill_zero(modifier->accuracy - size);
-		out = ft_strjoin(zero, str);
-		free(str);
-	}
-	else
-	{
-		out = ft_strdup(str);
-		free(str);
-	}
+	out = help_str_d1(modifier, size, str);
 	str = make_str_flag_d(modifier, out, sign);
 	free(zero);
 	free(sign);
