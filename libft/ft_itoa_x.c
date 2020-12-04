@@ -22,7 +22,7 @@ static char		*make_malloc_x(int size)
 	return (str);
 }
 
-static void		fill_str_x(char *str, unsigned long int n, int size)
+static void		fill_str_x(char *str, unsigned int n, int size)
 {
 	if (n % 16 == 10)
 		str[size] = 'a';
@@ -40,7 +40,7 @@ static void		fill_str_x(char *str, unsigned long int n, int size)
 		str[size] = n % 16 + '0';
 }
 
-char			*ft_itoa_x(unsigned long int n)
+char			*ft_itoa_x(unsigned int n)
 {
 	char	*str;
 	int		size;

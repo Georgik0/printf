@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_size_x.c                                    :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skitsch <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/21 18:45:04 by skitsch           #+#    #+#             */
-/*   Updated: 2020/11/21 18:46:23 by skitsch          ###   ########.fr       */
+/*   Created: 2020/11/13 17:58:43 by skitsch           #+#    #+#             */
+/*   Updated: 2020/11/13 17:59:53 by skitsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "./header/printf.h"
 
-int		ft_get_size_x(unsigned int n)
+int	ft_printf(const char *format, ...)
 {
-	int size;
+	va_list		ap;
+	int			out;
 
-	size = 1;
-	if (n == 0)
-		return (size);
-	while (n != 0)
-	{
-		n /= 16;
-		size++;
-	}
-	return (size - 1);
+	va_start(ap, format);
+	if ((out = parser(format, &ap)) == -1)
+		return (-1);
+	va_end(ap);
+	return (out);
 }

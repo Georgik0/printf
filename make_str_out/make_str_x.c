@@ -72,7 +72,7 @@ char	*make_str_x2(t_modifier *modifier, char *str, int size)
 	return (str);
 }
 
-char	*make_str_x1(t_modifier *modifier, unsigned long int arg, int reg)
+char	*make_str_x1(t_modifier *modifier, unsigned int arg, int reg)
 {
 	char	*str;
 	char	*str1;
@@ -96,9 +96,9 @@ char	*make_str_x1(t_modifier *modifier, unsigned long int arg, int reg)
 char	*make_str_x(t_modifier *modifier, va_list *pa, int reg)
 {
 	char				*str;
-	unsigned long int	arg;
+	unsigned int		arg;
 
-	arg = va_arg(*pa, unsigned long int);
+	arg = (unsigned int)va_arg(*pa, unsigned int);
 	if (modifier->width < 0)
 	{
 		modifier->width = -(modifier->width);
